@@ -1,11 +1,26 @@
 {
-  "name": "Elixir with GNU Guix",
-  "image": "mcr.microsoft.com/devcontainers/base:ubuntu-22.04",
-  "features": {},
-  "postCreateCommand": "bash .devcontainer/setup.sh",
+  "name": "Elixir Phoenix Chat App",
+  "image": "elixir:1.15-slim",
+  "features": {
+    "ghcr.io/devcontainers/features/node:1": {
+      "version": "18"
+    },
+    "ghcr.io/devcontainers/features/git:1": {}
+  },
   "customizations": {
     "vscode": {
-      "extensions": ["jakebecker.elixir-ls"]
+      "extensions": [
+        "jakebecker.elixir-ls",
+        "bradlc.vscode-tailwindcss"
+      ]
+    }
+  },
+  "postCreateCommand": "mix local.hex --force && mix archive.install hex phx_new --force",
+  "forwardPorts": [4000],
+  "portsAttributes": {
+    "4000": {
+      "label": "Phoenix Server",
+      "onAutoForward": "openBrowser"
     }
   }
 }
