@@ -1,19 +1,11 @@
 {
-  "name": "Elixir Phoenix with GNU Guix",
-  "image": "mcr.microsoft.com/vscode/devcontainers/base:ubuntu-22.04",
+  "name": "Elixir with GNU Guix",
+  "image": "mcr.microsoft.com/devcontainers/base:ubuntu-22.04",
   "features": {},
+  "postCreateCommand": "bash .devcontainer/setup.sh",
   "customizations": {
     "vscode": {
-      "extensions": [
-        "jakebecker.elixir-ls",
-        "ms-vscode.vscode-json",
-        "bradlc.vscode-tailwindcss"
-      ]
+      "extensions": ["jakebecker.elixir-ls"]
     }
-  },
-  "postCreateCommand": ".devcontainer/setup.sh",
-  "remoteUser": "vscode",
-  "mounts": [
-    "source=${localWorkspaceFolder}/.devcontainer/guix-cache,target=/home/vscode/.cache/guix,type=bind,consistency=cached"
-  ]
+  }
 }
