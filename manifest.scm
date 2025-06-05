@@ -1,10 +1,9 @@
-;; Guix manifest for Elixir Phoenix development
+;; GNU Guix manifest for Elixir Phoenix development
 (specifications->manifest
  '("elixir"
    "erlang"
    "node"
    "npm"
-   "postgresql"
    "git"
    "curl"
    "wget"
@@ -13,5 +12,4 @@
    "pkg-config"
    "openssl"
    "zlib"
-   "libffi"
    "ncurses"))
