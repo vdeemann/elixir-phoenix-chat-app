@@ -1,27 +1,25 @@
 #!/bin/bash
 set -e
 
-echo "Setting up GNU Guix development environment..."
+echo "🚀 Setting up Elixir development environment..."
 
-# Install dependencies first
+# Install basic dependencies
 sudo apt-get update
-sudo apt-get install -y wget curl gpg
+sudo apt-get install -y curl wget git build-essential
 
-# Install Guix
-cd /tmp
-wget https://git.savannah.gnu.org/cgit/guix.git/plain/etc/guix-install.sh
-chmod +x guix-install.sh
-sudo ./guix-install.sh
+# Install Erlang and Elixir directly (simpler than Guix for now)
+wget https://packages.erlang-solutions.com/erlang-solutions_2.0_all.deb
+sudo dpkg -i erlang-solutions_2.0_all.deb
+sudo apt-get update
+sudo apt-get install -y esl-erlang elixir
 
-# Add Guix to PATH for current session
-export PATH="$HOME/.config/guix/current/bin:$PATH"
-export GUIX_LOCPATH="$HOME/.guix-profile/lib/locale"
+# Install Node.js for Phoenix assets
+curl -fsSL https://deb.nodesource.com/setup_18.x | sudo -E bash -
+sudo apt-get install -y nodejs
 
-# Add to bashrc for future sessions
-echo 'export PATH="$HOME/.config/guix/current/bin:$PATH"' >> ~/.bashrc
-echo 'export GUIX_LOCPATH="$HOME/.guix-profile/lib/locale"' >> ~/.bashrc
+# Install Phoenix
+mix local.hex --force
+mix archive.install hex phx_new --force
 
-# Create cache directory
-mkdir -p ~/.cache/guix
-
-echo "Guix setup complete!"
+echo "✅ Environment setup complete!"
+echo "Run 'mix phx.new chat_app --live' to create your project"
