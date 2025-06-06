@@ -14,7 +14,7 @@ defmodule ChatAppWeb.ChatLive do
 
       "smileys" => ["😀", "😃", "😄", "😁", "😆", "😅", "😂", "🤣", "😊", "😇", "🙂", "🙃", "😉", "😌", "😍", "🥰", "😘", "😗", "😙", "😚", "😋", "😛", "😝", "😜", "🤪", "🤨", "🧐", "🤓", "😎", "🤩", "🥳", "😏", "😒", "😞", "😔", "😟", "😕", "🙁", "😣", "😖", "😫", "😩", "🥺", "😢", "😭", "😤", "😠", "😡", "🤬", "🤯", "😳", "🥵", "🥶", "😱", "😨", "😰", "😥", "😓", "🤗", "🤔", "🤭", "🤫", "🤥", "😶", "😐", "😑", "😬", "🙄", "😯", "😦", "😧", "😮", "😲", "🥱", "😴", "🤤", "😪", "😵", "🤐", "🥴", "🤢", "🤮", "🤧", "😷", "🤒", "🤕"],
 
-      "people" => ["👋", "🤚", "🖐️", "✋", "🖖", "👌", "🤏", "✌️", "🤞", "🤟", "🤘", "🤙", "👈", "👉", "👆", "🖕", "👇", "☝️", "👍", "👎", "👊", "✊", "🤛", "🤜", "👏", "🙌", "👐", "🤲", "🤝", "🙏", "✍️", "💅", "🤳", "💪", "🦾", "🦿", "🦵", "🦶", "👂", "🦻", "👃", "🧠", "🫀", "🫁", "🦷", "🦴", "👀", "👁️", "👅", "👄", "👶", "🧒", "👦", "👧", "🧑", "👱", "👨", "🧔", "👩", "🧓", "👴", "👵", "🙍", "🙎", "🙅", "🙆", "💁", "🙋", "🧏", "🙇", "🤦", "🤷", "👮", "🕵️", "💂", "🥷", "👷", "🤴", "👸", "👳", "👲", "🧕", "🤵", "👰", "🤰", "🤱", "👼", "🎅", "🤶", "🦸", "🦹", "🧙", "🧚", "🧛", "🧜", "🧝", "🧞", "🧟", "💆", "💇", "🚶", "🧍", "🧎", "🏃", "💃", "🕺"],
+      "people" => ["👋", "🤚", "🖐️", "✋", "🖖", "👌", "🤏", "✌️", "🤞", "🤟", "🤘", "🤙", "👈", "👉", "👆", "🖕", "👇", "☝️", "👍", "👎", "👊", "✊", "🤛", "🤜", "👏", "🙌", "👐", "🤲", "🤝", "🙏", "✍️", "💅", "🤳", "💪", "🦾", "🦿", "🦵", "🦶", "👂", "🦻", "👃", "🧠", "🫀", "🫁", "🦷", "🦴", "👀", "👁️", "👅", "👄", "👶", "🧒", "👦", "👧", "🧑", "👱", "👨", "🧔", "👩", "🧓", "👴", "👵", "🙍", "🙎", "🙅", "🙆", "💁", "🙋", "🧏", "🙇", "🤦", "🤷", "👮", "🕵️", "💂", "🥷", "👷", "🤴", "👸", "👳", "👲", "🧕", "🤵", "👰", "🤰", "🤱", "👼", "🎅", "🤶", "🦸", "🦹", "🧙", "🧚", "🧛", "🧜", "🧝", "🧞", "🧟", "💆", "💇", "🚶", "🧍", "🧎", "🏃", "💃", "🕺", "🧘", "🛀", "🛌", "🕴️", "🗣️", "👤", "👥", "🫂", "👣"],
 
       "animals" => ["🐶", "🐱", "🐭", "🐹", "🐰", "🦊", "🐻", "🐼", "🐨", "🐯", "🦁", "🐮", "🐷", "🐽", "🐸", "🐵", "🙈", "🙉", "🙊", "🐒", "🐔", "🐧", "🐦", "🐤", "🐣", "🐥", "🦆", "🦅", "🦉", "🦇", "🐺", "🐗", "🐴", "🦄", "🐝", "🐛", "🦋", "🐌", "🐞", "🐜", "🦟", "🦗", "🕷️", "🦂", "🐢", "🐍", "🦎", "🦖", "🦕", "🐙", "🦑", "🦐", "🦞", "🦀", "🐡", "🐠", "🐟", "🐬", "🐳", "🐋", "🦈", "🐊", "🐅", "🐆", "🦓", "🦍", "🦧", "🐘", "🦛", "🦏", "🐪", "🐫", "🦒", "🦘", "🐃", "🐂", "🐄", "🐎", "🐖", "🐏", "🐑", "🦙", "🐐", "🦌", "🐕", "🐩", "🦮", "🐈", "🐓", "🦃", "🦚", "🦜", "🦢", "🦩", "🕊️", "🐇", "🦝", "🦨", "🦡", "🦦", "🦥", "🐁", "🐀", "🐿️", "🦔"],
 
@@ -45,7 +45,36 @@ defmodule ChatAppWeb.ChatLive do
      |> assign(:gif_picker_open, false)
      |> assign(:gif_search, "")
      |> assign(:gif_results, [])
-     |> assign(:trending_gifs, [])}
+     |> assign(:trending_gifs, [])
+     |> assign(:replying_to, nil)  # Add reply state
+     |> assign(:default_skin_tone, "")  # Default skin tone (empty = yellow/default)
+     |> assign(:show_skin_tone_picker, false)}  # Show skin tone selector
+  end
+
+  def handle_event("set_default_skin_tone", %{"skin_tone" => skin_tone}, socket) do
+    {:noreply,
+     socket
+     |> assign(:default_skin_tone, skin_tone)
+     |> assign(:show_skin_tone_picker, false)}
+  end
+
+  def handle_event("toggle_skin_tone_picker", _params, socket) do
+    {:noreply, assign(socket, :show_skin_tone_picker, !socket.assigns.show_skin_tone_picker)}
+  end
+
+  def handle_event("reply_to_message", %{"message_id" => message_id}, socket) do
+    message_id = String.to_integer(message_id)
+    replying_to = Enum.find(socket.assigns.messages, &(&1.id == message_id))
+
+    {:noreply,
+     socket
+     |> assign(:replying_to, replying_to)
+     |> assign(:emoji_picker_open, false)
+     |> assign(:gif_picker_open, false)}
+  end
+
+  def handle_event("cancel_reply", _params, socket) do
+    {:noreply, assign(socket, :replying_to, nil)}
   end
 
   def handle_event("select_emoji_category", %{"category" => category}, socket) do
@@ -100,7 +129,8 @@ defmodule ChatAppWeb.ChatLive do
         text: "",
         gif_url: gif_url,
         sender: :user,
-        time: DateTime.utc_now()
+        time: DateTime.utc_now(),
+        reply_to: socket.assigns.replying_to  # Include reply context
       }
 
       # Generate response based on selected user
@@ -121,7 +151,8 @@ defmodule ChatAppWeb.ChatLive do
       {:noreply,
        socket
        |> assign(:messages, socket.assigns.messages ++ [user_message, bot_message])
-       |> assign(:gif_picker_open, false)}
+       |> assign(:gif_picker_open, false)
+       |> assign(:replying_to, nil)}  # Clear reply state
     else
       {:noreply, socket}
     end
@@ -129,7 +160,9 @@ defmodule ChatAppWeb.ChatLive do
 
   def handle_event("select_emoji", %{"emoji" => emoji}, socket) do
     current_message = socket.assigns.message_input
-    new_message = current_message <> emoji
+    # Apply default skin tone if applicable
+    emoji_with_skin_tone = apply_default_skin_tone(emoji, socket.assigns.default_skin_tone)
+    new_message = current_message <> emoji_with_skin_tone
 
     {:noreply,
      socket
@@ -148,7 +181,8 @@ defmodule ChatAppWeb.ChatLive do
     {:noreply,
      socket
      |> assign(:selected_user, selected_user)
-     |> assign(:messages, [])}  # Clear messages when switching users
+     |> assign(:messages, [])  # Clear messages when switching users
+     |> assign(:replying_to, nil)}  # Clear reply state when switching users
   end
 
   def handle_event("send_message", %{"message" => message}, socket) do
@@ -157,7 +191,8 @@ defmodule ChatAppWeb.ChatLive do
         id: :rand.uniform(10000),
         text: message,
         sender: :user,
-        time: DateTime.utc_now()
+        time: DateTime.utc_now(),
+        reply_to: socket.assigns.replying_to  # Include reply context
       }
 
       # Generate response based on selected user
@@ -178,7 +213,8 @@ defmodule ChatAppWeb.ChatLive do
       {:noreply,
        socket
        |> assign(:messages, socket.assigns.messages ++ [user_message, bot_message])
-       |> assign(:message_input, "")}
+       |> assign(:message_input, "")
+       |> assign(:replying_to, nil)}  # Clear reply state after sending
     else
       {:noreply, socket}
     end
@@ -230,6 +266,69 @@ defmodule ChatAppWeb.ChatLive do
       String.contains?(emoji_name, search_term)
     end)
     |> Enum.take(50) # Limit search results
+  end
+
+  # Helper function to get skin tone variations for emoji
+  defp get_skin_tone_variations(emoji) do
+    skin_tones = ["🏻", "🏼", "🏽", "🏾", "🏿"]
+
+    # Base emojis that support skin tones
+    skin_tone_emojis = [
+      "👋", "🤚", "🖐️", "✋", "🖖", "👌", "🤏", "✌️", "🤞", "🤟", "🤘", "🤙",
+      "👈", "👉", "👆", "🖕", "👇", "☝️", "👍", "👎", "👊", "✊", "🤛", "🤜",
+      "👏", "🙌", "👐", "🤲", "🙏", "✍️", "💅", "🤳", "💪", "🦵", "🦶", "👂",
+      "👃", "👶", "🧒", "👦", "👧", "🧑", "👱", "👨", "🧔", "👩", "🧓", "👴",
+      "👵", "🙍", "🙎", "🙅", "🙆", "💁", "🙋", "🧏", "🙇", "🤦", "🤷", "👮",
+      "🕵️", "💂", "👷", "🤴", "👸", "👳", "👲", "🧕", "🤵", "👰", "🤰", "🤱",
+      "🎅", "🤶", "🦸", "🦹", "🧙", "🧚", "🧛", "🧜", "🧝", "💆", "💇", "🚶",
+      "🧍", "🧎", "🏃", "💃", "🕺", "🧘", "🛀", "🛌", "🕴️"
+    ]
+
+    # Remove any existing skin tone modifiers to get base emoji
+    base_emoji = String.replace(emoji, ["🏻", "🏼", "🏽", "🏾", "🏿"], "")
+
+    if Enum.member?(skin_tone_emojis, base_emoji) do
+      [base_emoji | Enum.map(skin_tones, fn tone -> base_emoji <> tone end)]
+    else
+      [emoji]
+    end
+  end
+
+  # Helper function to apply default skin tone to emoji
+  defp apply_default_skin_tone(emoji, default_skin_tone) do
+    if default_skin_tone != "" do
+      # Check if emoji supports skin tones by checking if it's in our list
+      skin_tone_emojis = [
+        "👋", "🤚", "🖐️", "✋", "🖖", "👌", "🤏", "✌️", "🤞", "🤟", "🤘", "🤙",
+        "👈", "👉", "👆", "🖕", "👇", "☝️", "👍", "👎", "👊", "✊", "🤛", "🤜",
+        "👏", "🙌", "👐", "🤲", "🙏", "✍️", "💅", "🤳", "💪", "🦵", "🦶", "👂",
+        "👃", "👶", "🧒", "👦", "👧", "🧑", "👱", "👨", "🧔", "👩", "🧓", "👴",
+        "👵", "🙍", "🙎", "🙅", "🙆", "💁", "🙋", "🧏", "🙇", "🤦", "🤷", "👮",
+        "🕵️", "💂", "👷", "🤴", "👸", "👳", "👲", "🧕", "🤵", "👰", "🤰", "🤱",
+        "🎅", "🤶", "🦸", "🦹", "🧙", "🧚", "🧛", "🧜", "🧝", "💆", "💇", "🚶",
+        "🧍", "🧎", "🏃", "💃", "🕺", "🧘", "🛀", "🛌", "🕴️"
+      ]
+
+      # Remove any existing skin tone modifiers first
+      base_emoji = String.replace(emoji, ["🏻", "🏼", "🏽", "🏾", "🏿"], "")
+
+      if Enum.member?(skin_tone_emojis, base_emoji) do
+        base_emoji <> default_skin_tone
+      else
+        emoji
+      end
+    else
+      emoji
+    end
+  end
+
+  # Helper function to truncate text for reply preview
+  defp truncate_text(text, length \\ 50) do
+    if String.length(text) > length do
+      String.slice(text, 0, length) <> "..."
+    else
+      text
+    end
   end
 
   # Tenor API functions - Using mock data with working GIPHY URLs
@@ -373,7 +472,7 @@ defmodule ChatAppWeb.ChatLive do
       <div class="fixed bottom-6 right-6 z-50 flex flex-col items-end space-y-4">
         <!-- Chat Window (when open) -->
         <div class={"#{if @chat_open, do: "block animate-fade-in", else: "hidden"}"}>
-          <div class="bg-white rounded-xl shadow-2xl border w-96 h-[calc(100vh-8rem)] flex flex-col">
+          <div class="bg-white rounded-xl shadow-2xl border w-[450px] h-[calc(100vh-8rem)] flex flex-col">
             <!-- User Selection Area -->
             <div class="p-5 bg-white rounded-t-xl">
               <div class="flex items-center space-x-2">
@@ -410,8 +509,26 @@ defmodule ChatAppWeb.ChatLive do
               <!-- Dynamic Messages -->
               <%= for message <- @messages do %>
                 <%= if message.sender == :user do %>
+                  <!-- User Message -->
                   <div class="flex justify-end animate-slide-in">
                     <div class="bg-emerald-500 text-white rounded-lg p-3 max-w-xs shadow-sm">
+                      <!-- Reply Context (if replying) -->
+                      <%= if Map.get(message, :reply_to) do %>
+                        <div class="bg-emerald-400 bg-opacity-50 rounded p-2 mb-2 text-xs">
+                          <div class="flex items-center space-x-1 mb-1">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-3 w-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 10h10a8 8 0 018 8v2M3 10l6 6m-6-6l6-6" />
+                            </svg>
+                            <span class="opacity-80">Replying to</span>
+                          </div>
+                          <%= if Map.get(message.reply_to, :gif_url) do %>
+                            <div class="italic opacity-80">GIF message</div>
+                          <% else %>
+                            <div class="italic opacity-80"><%= truncate_text(message.reply_to.text) %></div>
+                          <% end %>
+                        </div>
+                      <% end %>
+
                       <%= if Map.get(message, :gif_url) do %>
                         <img src={message.gif_url} alt="GIF" class="rounded max-w-full h-auto" style="max-height: 200px;" />
                       <% else %>
@@ -420,16 +537,31 @@ defmodule ChatAppWeb.ChatLive do
                     </div>
                   </div>
                 <% else %>
-                  <div class="flex items-start space-x-3 animate-slide-in">
+                  <!-- Bot Message with Reply Button -->
+                  <div class="flex items-start space-x-3 animate-slide-in group relative">
                     <div class="w-8 h-8 bg-emerald-100 rounded-full flex items-center justify-center flex-shrink-0">
                       <span class="text-emerald-600 text-xs font-semibold">S</span>
                     </div>
-                    <div class="bg-white rounded-lg p-3 max-w-xs shadow-sm">
-                      <%= if Map.get(message, :gif_url) do %>
-                        <img src={message.gif_url} alt="GIF" class="rounded max-w-full h-auto" style="max-height: 200px;" />
-                      <% else %>
-                        <p class="text-sm text-gray-800 whitespace-pre-wrap"><%= message.text %></p>
-                      <% end %>
+                    <div class="flex-1 min-w-0 relative">
+                      <div class="bg-white rounded-lg p-3 max-w-xs shadow-sm relative">
+                        <%= if Map.get(message, :gif_url) do %>
+                          <img src={message.gif_url} alt="GIF" class="rounded max-w-full h-auto" style="max-height: 200px;" />
+                        <% else %>
+                          <p class="text-sm text-gray-800 whitespace-pre-wrap"><%= message.text %></p>
+                        <% end %>
+
+                        <!-- Reply Button (positioned middle-right of message bubble) -->
+                        <button
+                          phx-click="reply_to_message"
+                          phx-value-message_id={message.id}
+                          class="absolute top-1/2 -right-2 transform -translate-y-1/2 opacity-0 group-hover:opacity-100 transition-opacity duration-200 bg-gray-100 hover:bg-gray-200 rounded-full p-1 text-gray-600 hover:text-gray-800 shadow-sm"
+                          title="Reply to this message"
+                        >
+                          <svg xmlns="http://www.w3.org/2000/svg" class="h-3 w-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 10h10a8 8 0 018 8v2M3 10l6 6m-6-6l6-6" />
+                          </svg>
+                        </button>
+                      </div>
                     </div>
                   </div>
                 <% end %>
@@ -438,6 +570,36 @@ defmodule ChatAppWeb.ChatLive do
 
             <!-- Message Input Container -->
             <div class="p-5 bg-white rounded-b-xl relative">
+              <!-- Reply Preview Bar -->
+              <%= if @replying_to do %>
+                <div class="mb-3 bg-gray-50 border-l-4 border-emerald-500 p-3 rounded">
+                  <div class="flex items-center justify-between">
+                    <div class="flex-1">
+                      <div class="flex items-center space-x-2 mb-1">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-3 w-3 text-emerald-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 10h10a8 8 0 018 8v2M3 10l6 6m-6-6l6-6" />
+                        </svg>
+                        <span class="text-xs font-medium text-emerald-600">Replying to message</span>
+                      </div>
+                      <%= if Map.get(@replying_to, :gif_url) do %>
+                        <p class="text-xs text-gray-600 italic">GIF message</p>
+                      <% else %>
+                        <p class="text-xs text-gray-600"><%= truncate_text(@replying_to.text) %></p>
+                      <% end %>
+                    </div>
+                    <button
+                      phx-click="cancel_reply"
+                      class="text-gray-400 hover:text-gray-600 transition-colors ml-2"
+                      title="Cancel reply"
+                    >
+                      <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                      </svg>
+                    </button>
+                  </div>
+                </div>
+              <% end %>
+
               <!-- GIF Picker Popup -->
               <%= if @gif_picker_open do %>
                 <div class="absolute bottom-full left-0 mb-2 bg-white border border-gray-200 rounded-lg shadow-xl w-full z-50">
@@ -516,9 +678,104 @@ defmodule ChatAppWeb.ChatLive do
               <!-- Emoji Picker Popup - Now positioned relative to the input container -->
               <%= if @emoji_picker_open do %>
                 <div class="emoji-picker-container absolute bottom-full left-0 mb-2 bg-white border border-gray-200 rounded-lg shadow-xl w-full z-50">
-                  <!-- Header with close button -->
+                  <!-- Header with skin tone selector and close button -->
                   <div class="flex items-center justify-between p-3 border-b border-gray-100">
-                    <span class="text-sm font-medium text-gray-700">Emojis</span>
+                    <div class="flex items-center space-x-2">
+                      <span class="text-sm font-medium text-gray-700">Emojis</span>
+
+                      <!-- Skin Tone Selector -->
+                      <div class="relative">
+                        <button
+                          type="button"
+                          phx-click="toggle_skin_tone_picker"
+                          class="flex items-center space-x-1 px-2 py-1 bg-gray-100 hover:bg-gray-200 rounded text-sm transition-colors"
+                          title="Select default skin tone"
+                        >
+                          <span class="text-base">
+                            <%= case @default_skin_tone do %>
+                              <% "🏻" -> %> 👋🏻
+                              <% "🏼" -> %> 👋🏼
+                              <% "🏽" -> %> 👋🏽
+                              <% "🏾" -> %> 👋🏾
+                              <% "🏿" -> %> 👋🏿
+                              <% _ -> %> 👋
+                            <% end %>
+                          </span>
+                          <svg xmlns="http://www.w3.org/2000/svg" class="h-3 w-3 text-gray-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+                          </svg>
+                        </button>
+
+                        <!-- Skin Tone Dropdown -->
+                        <%= if @show_skin_tone_picker do %>
+                          <div class="absolute top-full left-0 mt-1 bg-white border border-gray-200 rounded-lg shadow-lg z-60 min-w-max">
+                            <div class="p-2 grid grid-cols-6 gap-1">
+                              <!-- Default (yellow) -->
+                              <button
+                                type="button"
+                                phx-click="set_default_skin_tone"
+                                phx-value-skin_tone=""
+                                class={"w-8 h-8 flex items-center justify-center hover:bg-gray-100 rounded transition-colors #{if @default_skin_tone == "", do: "bg-blue-100 ring-2 ring-blue-500"}"}
+                                title="Default"
+                              >
+                                👋
+                              </button>
+                              <!-- Light skin tone -->
+                              <button
+                                type="button"
+                                phx-click="set_default_skin_tone"
+                                phx-value-skin_tone="🏻"
+                                class={"w-8 h-8 flex items-center justify-center hover:bg-gray-100 rounded transition-colors #{if @default_skin_tone == "🏻", do: "bg-blue-100 ring-2 ring-blue-500"}"}
+                                title="Light skin tone"
+                              >
+                                👋🏻
+                              </button>
+                              <!-- Medium-light skin tone -->
+                              <button
+                                type="button"
+                                phx-click="set_default_skin_tone"
+                                phx-value-skin_tone="🏼"
+                                class={"w-8 h-8 flex items-center justify-center hover:bg-gray-100 rounded transition-colors #{if @default_skin_tone == "🏼", do: "bg-blue-100 ring-2 ring-blue-500"}"}
+                                title="Medium-light skin tone"
+                              >
+                                👋🏼
+                              </button>
+                              <!-- Medium skin tone -->
+                              <button
+                                type="button"
+                                phx-click="set_default_skin_tone"
+                                phx-value-skin_tone="🏽"
+                                class={"w-8 h-8 flex items-center justify-center hover:bg-gray-100 rounded transition-colors #{if @default_skin_tone == "🏽", do: "bg-blue-100 ring-2 ring-blue-500"}"}
+                                title="Medium skin tone"
+                              >
+                                👋🏽
+                              </button>
+                              <!-- Medium-dark skin tone -->
+                              <button
+                                type="button"
+                                phx-click="set_default_skin_tone"
+                                phx-value-skin_tone="🏾"
+                                class={"w-8 h-8 flex items-center justify-center hover:bg-gray-100 rounded transition-colors #{if @default_skin_tone == "🏾", do: "bg-blue-100 ring-2 ring-blue-500"}"}
+                                title="Medium-dark skin tone"
+                              >
+                                👋🏾
+                              </button>
+                              <!-- Dark skin tone -->
+                              <button
+                                type="button"
+                                phx-click="set_default_skin_tone"
+                                phx-value-skin_tone="🏿"
+                                class={"w-8 h-8 flex items-center justify-center hover:bg-gray-100 rounded transition-colors #{if @default_skin_tone == "🏿", do: "bg-blue-100 ring-2 ring-blue-500"}"}
+                                title="Dark skin tone"
+                              >
+                                👋🏿
+                              </button>
+                            </div>
+                          </div>
+                        <% end %>
+                      </div>
+                    </div>
+
                     <button
                       type="button"
                       phx-click="toggle_emoji_picker"
@@ -572,16 +829,15 @@ defmodule ChatAppWeb.ChatLive do
                   <div class="p-3 max-h-64 overflow-y-auto">
                     <%= if @emoji_search != "" do %>
                       <!-- Search Results -->
-                      <div class="grid grid-cols-7 gap-1">
+                      <div class="grid grid-cols-8 gap-1">
                         <%= for emoji <- filter_emojis(@emoji_categories, @emoji_search) do %>
                           <button
                             type="button"
                             phx-click="select_emoji"
                             phx-value-emoji={emoji}
                             class="w-8 h-8 flex items-center justify-center hover:bg-gray-100 rounded text-lg transition-colors"
-                            title={emoji}
                           >
-                            <%= emoji %>
+                            <%= apply_default_skin_tone(emoji, @default_skin_tone) %>
                           </button>
                         <% end %>
                       </div>
@@ -590,16 +846,15 @@ defmodule ChatAppWeb.ChatLive do
                       <p class="text-xs text-gray-500 font-medium mb-3 uppercase tracking-wide">
                         <%= String.replace(@selected_emoji_category, "_", " ") %>
                       </p>
-                      <div class="grid grid-cols-7 gap-1">
+                      <div class="grid grid-cols-8 gap-1">
                         <%= for emoji <- Map.get(@emoji_categories, @selected_emoji_category, []) do %>
                           <button
                             type="button"
                             phx-click="select_emoji"
                             phx-value-emoji={emoji}
                             class="w-8 h-8 flex items-center justify-center hover:bg-gray-100 rounded text-lg transition-colors"
-                            title={emoji}
                           >
-                            <%= emoji %>
+                            <%= apply_default_skin_tone(emoji, @default_skin_tone) %>
                           </button>
                         <% end %>
                       </div>
