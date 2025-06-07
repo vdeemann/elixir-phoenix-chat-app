@@ -1,0 +1,62 @@
+version: '3.8'
+
+services:
+  db:
+    image: postgres:15-alpine
+    container_name: chat_db
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: chat_dev
+      POSTGRES_HOST_AUTH_METHOD: trust
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks:
+      - chat_network
+
+  web:
+    build: 
+      context: .
+      dockerfile: Dockerfile
+    container_name: chat_web
+    ports:
+      - "4000:4000"
+    depends_on:
+      db:
+        condition: service_healthy
+    environment:
+      - MIX_ENV=dev
+      - DATABASE_URL=ecto://postgres:postgres@db/chat_dev
+      - SECRET_KEY_BASE=your-very-long-secret-key-base-64-chars-minimum
+      - PHX_HOST=localhost
+    volumes:
+      - .:/app
+      - /app/deps
+      - /app/_build
+      - /app/assets/node_modules
+    working_dir: /app
+    stdin_open: true
+    tty: true
+    networks:
+      - chat_network
+    command: >
+      bash -c "
+        echo 'Starting Phoenix app...' &&
+        mix deps.get &&
+        mix phx.server
+      "
+
+volumes:
+  postgres_data:
+    driver: local
+
+networks:
+  chat_network:
+    driver: bridge
