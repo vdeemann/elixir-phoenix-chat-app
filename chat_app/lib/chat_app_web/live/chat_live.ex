@@ -224,6 +224,15 @@ defmodule ChatAppWeb.ChatLive do
     {:noreply, assign(socket, :message_input, message)}
   end
 
+  # Helper function to group messages by date
+  defp group_messages_by_date(messages) do
+    messages
+    |> Enum.group_by(fn message ->
+      DateTime.to_date(message.time)
+    end)
+    |> Enum.sort_by(fn {date, _} -> date end, :asc)
+  end
+
   # Helper function to filter emojis based on search
   defp filter_emojis(emoji_categories, search_term) do
     search_term = String.downcase(search_term)
@@ -266,32 +275,6 @@ defmodule ChatAppWeb.ChatLive do
       String.contains?(emoji_name, search_term)
     end)
     |> Enum.take(50) # Limit search results
-  end
-
-  # Helper function to get skin tone variations for emoji
-  defp get_skin_tone_variations(emoji) do
-    skin_tones = ["🏻", "🏼", "🏽", "🏾", "🏿"]
-
-    # Base emojis that support skin tones
-    skin_tone_emojis = [
-      "👋", "🤚", "🖐️", "✋", "🖖", "👌", "🤏", "✌️", "🤞", "🤟", "🤘", "🤙",
-      "👈", "👉", "👆", "🖕", "👇", "☝️", "👍", "👎", "👊", "✊", "🤛", "🤜",
-      "👏", "🙌", "👐", "🤲", "🙏", "✍️", "💅", "🤳", "💪", "🦵", "🦶", "👂",
-      "👃", "👶", "🧒", "👦", "👧", "🧑", "👱", "👨", "🧔", "👩", "🧓", "👴",
-      "👵", "🙍", "🙎", "🙅", "🙆", "💁", "🙋", "🧏", "🙇", "🤦", "🤷", "👮",
-      "🕵️", "💂", "👷", "🤴", "👸", "👳", "👲", "🧕", "🤵", "👰", "🤰", "🤱",
-      "🎅", "🤶", "🦸", "🦹", "🧙", "🧚", "🧛", "🧜", "🧝", "💆", "💇", "🚶",
-      "🧍", "🧎", "🏃", "💃", "🕺", "🧘", "🛀", "🛌", "🕴️"
-    ]
-
-    # Remove any existing skin tone modifiers to get base emoji
-    base_emoji = String.replace(emoji, ["🏻", "🏼", "🏽", "🏾", "🏿"], "")
-
-    if Enum.member?(skin_tone_emojis, base_emoji) do
-      [base_emoji | Enum.map(skin_tones, fn tone -> base_emoji <> tone end)]
-    else
-      [emoji]
-    end
   end
 
   # Helper function to apply default skin tone to emoji
@@ -437,34 +420,6 @@ defmodule ChatAppWeb.ChatLive do
     if results == [], do: {:ok, []}, else: {:ok, results}
   end
 
-  # To enable real Tenor API:
-  # 1. Add to mix.exs: {:httpoison, "~> 2.0"}, {:jason, "~> 1.4"}
-  # 2. Get API key from: https://developers.google.com/tenor/guides/quickstart
-  # 3. Replace the functions above with:
-  #
-  # defp fetch_trending_gifs() do
-  #   api_key = System.get_env("TENOR_API_KEY") || "YOUR_API_KEY"
-  #   url = "https://tenor.googleapis.com/v2/featured?key=#{api_key}&limit=20&media_filter=gif"
-  #
-  #   case HTTPoison.get(url) do
-  #     {:ok, %HTTPoison.Response{status_code: 200, body: body}} ->
-  #       case Jason.decode(body) do
-  #         {:ok, %{"results" => results}} ->
-  #           gifs = Enum.map(results, fn gif ->
-  #             %{
-  #               id: gif["id"],
-  #               title: gif["title"] || "GIF",
-  #               gif_url: get_in(gif, ["media_formats", "gif", "url"]) || "",
-  #               preview_url: get_in(gif, ["media_formats", "tinygif", "url"]) || get_in(gif, ["media_formats", "gif", "url"]) || ""
-  #             }
-  #           end)
-  #           {:ok, gifs}
-  #         _ -> {:error, "Failed to parse response"}
-  #       end
-  #     _ -> {:error, "Failed to fetch trending GIFs"}
-  #   end
-  # end
-
   def render(assigns) do
     ~H"""
     <div class="min-h-screen bg-white relative">
@@ -507,63 +462,81 @@ defmodule ChatAppWeb.ChatLive do
             <!-- Messages Area -->
             <div class="flex-1 p-5 overflow-y-auto space-y-4 bg-white">
               <!-- Dynamic Messages -->
-              <%= for message <- @messages do %>
-                <%= if message.sender == :user do %>
-                  <!-- User Message -->
-                  <div class="flex justify-end animate-slide-in">
-                    <div class="bg-emerald-500 text-white rounded-lg p-3 max-w-xs shadow-sm">
-                      <!-- Reply Context (if replying) -->
-                      <%= if Map.get(message, :reply_to) do %>
-                        <div class="bg-emerald-400 bg-opacity-50 rounded p-2 mb-2 text-xs">
-                          <div class="flex items-center space-x-1 mb-1">
+              <%= for {date, messages} <- group_messages_by_date(@messages) do %>
+                <!-- Date Separator -->
+                <div class="text-center text-xs text-gray-500 font-medium my-2">
+                  <%= Calendar.strftime(date, "%A, %B %d, %Y") %>
+                </div>
+
+                <!-- Messages for this date -->
+                <%= for message <- messages do %>
+                  <%= if message.sender == :user do %>
+                    <!-- User Message -->
+                    <div class="flex justify-end animate-slide-in">
+                      <div class="flex flex-col items-end">
+                        <div class="bg-emerald-500 text-white rounded-lg p-3 max-w-xs shadow-sm">
+                          <!-- Reply Context (if replying) -->
+                          <%= if Map.get(message, :reply_to) do %>
+                            <div class="bg-emerald-400 bg-opacity-50 rounded p-2 mb-2 text-xs">
+                              <div class="flex items-center space-x-1 mb-1">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-3 w-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 10h10a8 8 0 018 8v2M3 10l6 6m-6-6l6-6" />
+                                </svg>
+                                <span class="opacity-80">Replying to</span>
+                              </div>
+                              <%= if Map.get(message.reply_to, :gif_url) do %>
+                                <div class="italic opacity-80">GIF message</div>
+                              <% else %>
+                                <div class="italic opacity-80"><%= truncate_text(message.reply_to.text) %></div>
+                              <% end %>
+                            </div>
+                          <% end %>
+
+                          <%= if Map.get(message, :gif_url) do %>
+                            <img src={message.gif_url} alt="GIF" class="rounded max-w-full h-auto" style="max-height: 200px;" />
+                          <% else %>
+                            <p class="text-sm whitespace-pre-wrap"><%= message.text %></p>
+                          <% end %>
+                        </div>
+                        <!-- Timestamp below message -->
+                        <div class="text-xs text-gray-400 mt-1 px-1">
+                          <%= Calendar.strftime(message.time, "%I:%M %p") %>
+                        </div>
+                      </div>
+                    </div>
+                  <% else %>
+                    <!-- Bot Message with Reply Button -->
+                    <div class="flex items-start space-x-3 animate-slide-in group relative">
+                      <div class="w-8 h-8 bg-emerald-100 rounded-full flex items-center justify-center flex-shrink-0">
+                        <span class="text-emerald-600 text-xs font-semibold">S</span>
+                      </div>
+                      <div class="flex-1 min-w-0 relative">
+                        <div class="bg-white rounded-lg p-3 max-w-xs shadow-sm relative">
+                          <%= if Map.get(message, :gif_url) do %>
+                            <img src={message.gif_url} alt="GIF" class="rounded max-w-full h-auto" style="max-height: 200px;" />
+                          <% else %>
+                            <p class="text-sm text-gray-800 whitespace-pre-wrap"><%= message.text %></p>
+                          <% end %>
+
+                          <!-- Reply Button (positioned middle-right of message bubble) -->
+                          <button
+                            phx-click="reply_to_message"
+                            phx-value-message_id={message.id}
+                            class="absolute top-1/2 -right-2 transform -translate-y-1/2 opacity-0 group-hover:opacity-100 transition-opacity duration-200 bg-gray-100 hover:bg-gray-200 rounded-full p-1 text-gray-600 hover:text-gray-800 shadow-sm"
+                            title="Reply to this message"
+                          >
                             <svg xmlns="http://www.w3.org/2000/svg" class="h-3 w-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 10h10a8 8 0 018 8v2M3 10l6 6m-6-6l6-6" />
                             </svg>
-                            <span class="opacity-80">Replying to</span>
-                          </div>
-                          <%= if Map.get(message.reply_to, :gif_url) do %>
-                            <div class="italic opacity-80">GIF message</div>
-                          <% else %>
-                            <div class="italic opacity-80"><%= truncate_text(message.reply_to.text) %></div>
-                          <% end %>
+                          </button>
                         </div>
-                      <% end %>
-
-                      <%= if Map.get(message, :gif_url) do %>
-                        <img src={message.gif_url} alt="GIF" class="rounded max-w-full h-auto" style="max-height: 200px;" />
-                      <% else %>
-                        <p class="text-sm whitespace-pre-wrap"><%= message.text %></p>
-                      <% end %>
-                    </div>
-                  </div>
-                <% else %>
-                  <!-- Bot Message with Reply Button -->
-                  <div class="flex items-start space-x-3 animate-slide-in group relative">
-                    <div class="w-8 h-8 bg-emerald-100 rounded-full flex items-center justify-center flex-shrink-0">
-                      <span class="text-emerald-600 text-xs font-semibold">S</span>
-                    </div>
-                    <div class="flex-1 min-w-0 relative">
-                      <div class="bg-white rounded-lg p-3 max-w-xs shadow-sm relative">
-                        <%= if Map.get(message, :gif_url) do %>
-                          <img src={message.gif_url} alt="GIF" class="rounded max-w-full h-auto" style="max-height: 200px;" />
-                        <% else %>
-                          <p class="text-sm text-gray-800 whitespace-pre-wrap"><%= message.text %></p>
-                        <% end %>
-
-                        <!-- Reply Button (positioned middle-right of message bubble) -->
-                        <button
-                          phx-click="reply_to_message"
-                          phx-value-message_id={message.id}
-                          class="absolute top-1/2 -right-2 transform -translate-y-1/2 opacity-0 group-hover:opacity-100 transition-opacity duration-200 bg-gray-100 hover:bg-gray-200 rounded-full p-1 text-gray-600 hover:text-gray-800 shadow-sm"
-                          title="Reply to this message"
-                        >
-                          <svg xmlns="http://www.w3.org/2000/svg" class="h-3 w-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 10h10a8 8 0 018 8v2M3 10l6 6m-6-6l6-6" />
-                          </svg>
-                        </button>
+                        <!-- Timestamp below bot message -->
+                        <div class="text-xs text-gray-400 mt-1 px-1">
+                          <%= Calendar.strftime(message.time, "%I:%M %p") %>
+                        </div>
                       </div>
                     </div>
-                  </div>
+                  <% end %>
                 <% end %>
               <% end %>
             </div>
@@ -800,13 +773,14 @@ defmodule ChatAppWeb.ChatLive do
                   </div>
 
                   <!-- Category Tabs -->
-                  <div class="flex overflow-x-auto border-b border-gray-100 px-2 scrollbar-hide">
+                  <div class="flex overflow-x-auto border-b border-gray-100 px-2 scrollbar-hide" id="emoji-category-tabs">
                     <%= for {category, _emojis} <- @emoji_categories do %>
                       <button
                         type="button"
                         phx-click="select_emoji_category"
                         phx-value-category={category}
-                        class={"flex-shrink-0 py-2 px-3 text-xs font-medium text-center capitalize transition-colors #{if @selected_emoji_category == category, do: "text-emerald-600 border-b-2 border-emerald-500", else: "text-gray-500 hover:text-gray-700"}"}
+                        class={"flex-shrink-0 py-2 px-3 text-xs font-medium text-center capitalize transition-colors emoji-category-tab #{if @selected_emoji_category == category, do: "text-emerald-600 border-b-2 border-emerald-500", else: "text-gray-500 hover:text-gray-700"}"}
+                        data-category={category}
                       >
                         <%= case category do %>
                           <% "frequently_used" -> %> 🕒
@@ -826,38 +800,48 @@ defmodule ChatAppWeb.ChatLive do
                   </div>
 
                   <!-- Emoji Grid -->
-                  <div class="p-3 max-h-64 overflow-y-auto">
+                  <div class="emoji-grid-container max-h-64 overflow-y-auto" id="emoji-grid-container">
                     <%= if @emoji_search != "" do %>
                       <!-- Search Results -->
-                      <div class="grid grid-cols-8 gap-1">
-                        <%= for emoji <- filter_emojis(@emoji_categories, @emoji_search) do %>
-                          <button
-                            type="button"
-                            phx-click="select_emoji"
-                            phx-value-emoji={emoji}
-                            class="w-8 h-8 flex items-center justify-center hover:bg-gray-100 rounded text-lg transition-colors"
-                          >
-                            <%= apply_default_skin_tone(emoji, @default_skin_tone) %>
-                          </button>
-                        <% end %>
+                      <div class="p-3">
+                        <div class="grid grid-cols-8 gap-1">
+                          <%= for emoji <- filter_emojis(@emoji_categories, @emoji_search) do %>
+                            <button
+                              type="button"
+                              phx-click="select_emoji"
+                              phx-value-emoji={emoji}
+                              class="w-8 h-8 flex items-center justify-center hover:bg-gray-100 rounded text-lg transition-colors"
+                            >
+                              <%= apply_default_skin_tone(emoji, @default_skin_tone) %>
+                            </button>
+                          <% end %>
+                        </div>
                       </div>
                     <% else %>
-                      <!-- Category Emojis -->
-                      <p class="text-xs text-gray-500 font-medium mb-3 uppercase tracking-wide">
-                        <%= String.replace(@selected_emoji_category, "_", " ") %>
-                      </p>
-                      <div class="grid grid-cols-8 gap-1">
-                        <%= for emoji <- Map.get(@emoji_categories, @selected_emoji_category, []) do %>
-                          <button
-                            type="button"
-                            phx-click="select_emoji"
-                            phx-value-emoji={emoji}
-                            class="w-8 h-8 flex items-center justify-center hover:bg-gray-100 rounded text-lg transition-colors"
-                          >
-                            <%= apply_default_skin_tone(emoji, @default_skin_tone) %>
-                          </button>
-                        <% end %>
-                      </div>
+                      <!-- Category Sections -->
+                      <%= for {category, emojis} <- @emoji_categories do %>
+                        <div class="emoji-category-section" data-category={category} id={"emoji-section-#{category}"}>
+                          <div class="px-3 pt-3 pb-2">
+                            <p class="text-xs text-gray-500 font-medium uppercase tracking-wide sticky top-0 bg-white z-10 py-1">
+                              <%= String.replace(category, "_", " ") %>
+                            </p>
+                          </div>
+                          <div class="px-3 pb-3">
+                            <div class="grid grid-cols-8 gap-1">
+                              <%= for emoji <- emojis do %>
+                                <button
+                                  type="button"
+                                  phx-click="select_emoji"
+                                  phx-value-emoji={emoji}
+                                  class="w-8 h-8 flex items-center justify-center hover:bg-gray-100 rounded text-lg transition-colors"
+                                >
+                                  <%= apply_default_skin_tone(emoji, @default_skin_tone) %>
+                                </button>
+                              <% end %>
+                            </div>
+                          </div>
+                        </div>
+                      <% end %>
                     <% end %>
                   </div>
                 </div>
@@ -966,13 +950,95 @@ defmodule ChatAppWeb.ChatLive do
         .scrollbar-hide::-webkit-scrollbar {
           display: none;
         }
+
+        /* Emoji picker specific styles */
+        .emoji-grid-container {
+          scroll-behavior: smooth;
+        }
+
+        .emoji-category-section {
+          scroll-margin-top: 10px;
+        }
+
+        .emoji-category-tab {
+          transition: all 0.2s ease;
+        }
+
+        .emoji-category-tab:hover {
+          background-color: rgba(0, 0, 0, 0.05);
+        }
       </style>
 
       <script>
+        // Enhanced emoji picker functionality
+        function setupEmojiPicker() {
+          const emojiContainer = document.getElementById('emoji-grid-container');
+          const categoryTabs = document.querySelectorAll('.emoji-category-tab');
+
+          if (!emojiContainer || !categoryTabs.length) return;
+
+          // Handle category tab clicks - scroll to section
+          categoryTabs.forEach(tab => {
+            tab.addEventListener('click', function(e) {
+              e.preventDefault();
+              const category = this.getAttribute('data-category');
+              const section = document.getElementById(`emoji-section-${category}`);
+
+              if (section) {
+                // Scroll to the section
+                emojiContainer.scrollTo({
+                  top: section.offsetTop - emojiContainer.offsetTop,
+                  behavior: 'smooth'
+                });
+              }
+            });
+          });
+
+          // Handle scroll events - highlight active category
+          let scrollTimeout;
+          emojiContainer.addEventListener('scroll', function() {
+            // Debounce scroll events for better performance
+            clearTimeout(scrollTimeout);
+            scrollTimeout = setTimeout(() => {
+              const containerTop = emojiContainer.scrollTop;
+              const containerHeight = emojiContainer.clientHeight;
+              const scrollCenter = containerTop + (containerHeight / 3); // Use top third for better UX
+
+              let activeCategory = null;
+              const sections = document.querySelectorAll('.emoji-category-section');
+
+              // Find which section is most visible
+              sections.forEach(section => {
+                const sectionTop = section.offsetTop - emojiContainer.offsetTop;
+                const sectionBottom = sectionTop + section.offsetHeight;
+
+                if (sectionTop <= scrollCenter && sectionBottom > scrollCenter) {
+                  activeCategory = section.getAttribute('data-category');
+                }
+              });
+
+              // Update active tab styling
+              if (activeCategory) {
+                categoryTabs.forEach(tab => {
+                  const tabCategory = tab.getAttribute('data-category');
+                  if (tabCategory === activeCategory) {
+                    tab.classList.add('text-emerald-600', 'border-b-2', 'border-emerald-500');
+                    tab.classList.remove('text-gray-500');
+                  } else {
+                    tab.classList.remove('text-emerald-600', 'border-b-2', 'border-emerald-500');
+                    tab.classList.add('text-gray-500');
+                  }
+                });
+              }
+            }, 50);
+          });
+        }
+
         let shouldFocusTextarea = false;
 
         window.addEventListener('DOMContentLoaded', function() {
           setupTextareaHandlers();
+          setupEmojiPicker();
         });
 
         function setupTextareaHandlers() {
@@ -1030,6 +1096,7 @@ defmodule ChatAppWeb.ChatLive do
         // Re-setup handlers and handle focus after LiveView updates
         document.addEventListener('phx:update', function() {
           setupTextareaHandlers();
+          setupEmojiPicker();
         });
       </script>
     </div>
