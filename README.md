@@ -1,3 +1,5 @@
 # elixir-phoenix-chat-app
 
-https://github.com/user-attachments/assets/3d62c765-e73d-4caa-96c1-efb87917bb6c
+
+https://github.com/user-attachments/assets/d32550d1-aa88-465b-ab76-16baebdb0474
+
